@@ -1,4 +1,15 @@
-import React from "react";
+import {
+  Button,
+  CenteredContainer,
+  Form,
+  GappedBox,
+  Input,
+  Label,
+  Link,
+  Text,
+} from "~/ui-library";
+import { useActionData, useSearchParams } from "@remix-run/react";
+import { createUserSession, getUserId } from "~/session.server";
 import {
   ActionFunction,
   json,
@@ -7,9 +18,7 @@ import {
 } from "@remix-run/node";
 import { safeRedirect } from "~/utils";
 import { verifyLogin } from "~/models/user.server";
-import { createUserSession, getUserId } from "~/session.server";
-import { Form, useActionData, useSearchParams } from "@remix-run/react";
-import { GappedBox } from "~/ui-library";
+import { useRef } from "react";
 
 interface ActionData {
   errors?: {
@@ -61,113 +70,96 @@ export const action: ActionFunction = async ({ request }) => {
     remember: true,
   });
 };
-
-const LoginPage = () => {
+const Login = () => {
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo") ?? "/documents";
-  const actionData = useActionData<ActionData>();
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
 
+  const actionData = useActionData<ActionData>();
   const fieldErrors = actionData?.errors;
 
   return (
-    <GappedBox>
-      <div className="flex min-h-screen bg-white">
-        <div className="flex flex-1 flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
-          <div className="mx-auto w-full max-w-sm lg:w-96">
-            <div>
-              <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
-                Log in
-              </h2>
-              <p className="max-w mt-2 text-sm text-gray-600">
-                Do not you have an account?{" "}
-                <a className="font-medium text-indigo-600 hover:text-indigo-500">
-                  Sign up
-                </a>
-              </p>
-            </div>
-            {fieldErrors && (
-              <div className="mt-6">
-                <p>{fieldErrors.username}</p>
-                <p>{fieldErrors.password}</p>
-              </div>
-            )}
-
-            <div className="mt-8">
-              <div className="mt-6">
-                <Form method="post" className="space-y-6">
-                  <div>
-                    <label
-                      htmlFor="username"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Username
-                    </label>
-                    <div className="mt-1">
-                      <input
-                        id="username"
-                        name="username"
-                        type="text"
-                        autoComplete="text"
-                        placeholder="iron-man"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-1">
-                    <label
-                      htmlFor="password"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Password
-                    </label>
-                    <div className="mt-1">
-                      <input
-                        id="password"
-                        name="password"
-                        placeholder="super-secret-password"
-                        type="password"
-                        autoComplete="current-password"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="text-sm">
-                      <a
-                        href="#"
-                        className="font-medium text-indigo-600 hover:text-indigo-500"
-                      >
-                        Forgot your password?
-                      </a>
-                    </div>
-                  </div>
-
-                  <div>
-                    <button
-                      type="submit"
-                      className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                    >
-                      Log in
-                    </button>
-                    <input type="hidden" name="redirectTo" value={redirectTo} />
-                  </div>
-                </Form>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="relative hidden w-0 flex-1 lg:block">
-          <img
-            className="absolute inset-0 h-full w-full object-cover"
-            src="https://images.unsplash.com/photo-1505904267569-f02eaeb45a4c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80"
-            alt=""
+    <CenteredContainer>
+      <h1>Log in</h1>
+      <Form method="post">
+        <GappedBox css={{ flexDirection: "column" }}>
+          <Label htmlFor="username">Username</Label>
+          <Input
+            ref={usernameRef}
+            id="username"
+            name="username"
+            type="text"
+            placeholder="iron-man"
+            size={2}
           />
-        </div>
-      </div>
-    </GappedBox>
+          {fieldErrors?.username && (
+            <Text
+              size={2}
+              css={{
+                marginTop: "0.3rem",
+                marginBottom: "0.3rem",
+                color: "$red11",
+              }}
+            >
+              {fieldErrors.username}
+            </Text>
+          )}
+
+          <Label htmlFor="password">Password</Label>
+          <Input
+            ref={passwordRef}
+            id="password"
+            size={2}
+            name="password"
+            placeholder="super-secret-password"
+            type="password"
+          />
+          {fieldErrors?.password && (
+            <Text
+              size={2}
+              css={{
+                marginTop: "0.3rem",
+                marginBottom: "0.3rem",
+                color: "$red11",
+              }}
+            >
+              {fieldErrors.password}
+            </Text>
+          )}
+
+          <GappedBox css={{ flexDirection: "column" }}>
+            <input type="hidden" name="redirectTo" value={redirectTo} />
+            <Button size="3" variant="green" type="submit">
+              Login
+            </Button>
+          </GappedBox>
+          <GappedBox css={{ justifyContent: "space-between" }}>
+            <Button
+              variant="orange"
+              as={Link}
+              to={{
+                pathname: "/forgot-password",
+                search: searchParams.toString(),
+              }}
+            >
+              Forgot your password?
+            </Button>
+            <Button
+              variant="blue"
+              as={Link}
+              to={{
+                pathname: "/register",
+                search: searchParams.toString(),
+              }}
+            >
+              Don't you have an account? Register here.
+            </Button>
+          </GappedBox>
+        </GappedBox>
+      </Form>
+    </CenteredContainer>
   );
 };
 
-export default LoginPage;
+export default Login;

@@ -20,7 +20,7 @@ export const Topnav: FC = () => {
       <CenteredContainer>
         <GappedBox as="nav" css={{ padding: "$2 0", alignItems: "center" }}>
           <Link prefetch="intent" to="/">
-            <GappedBox css={{ alignItems: "center" }}>pano</GappedBox>
+            <GappedBox css={{ alignItems: "center" }}>docupack</GappedBox>
           </Link>
           <Box css={{ px: 10, flex: 1 }}>
             <SearchInput />

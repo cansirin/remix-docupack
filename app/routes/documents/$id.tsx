@@ -3,7 +3,7 @@ import { getDocument, TDocument } from "~/models/document.server";
 import {
   Button,
   CenteredContainer,
-  GappedBox,
+  Form,
   Label,
   Link,
   Text,
@@ -25,12 +25,14 @@ const SingleDocument = () => {
 
   return (
     <CenteredContainer>
-      <Label htmlFor="name">Name</Label>
-      <Text id="name">{document.name}</Text>
-      <Label htmlFor="description">Description</Label>
-      <Text id="description">{document.description}</Text>
-      <Label htmlFor="type">Type</Label>
-      <Text id="type">{document.type}</Text>
+      <Form>
+        <Label htmlFor="name">Name</Label>
+        <Text id="name">{document.name}</Text>
+        <Label htmlFor="description">Description</Label>
+        <Text id="description">{document.description}</Text>
+        <Label htmlFor="type">Type</Label>
+        <Text id="type">{document.type}</Text>
+      </Form>
       <Button
         size="2"
         variant="blue"

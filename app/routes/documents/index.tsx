@@ -1,10 +1,10 @@
-import { MainColumn } from "~/components";
 import { DocumentsTable } from "~/features/document";
 import React from "react";
 import { json, LoaderFunction } from "@remix-run/node";
 import { requireUserId } from "~/session.server";
 import { getDocumentListItems } from "~/models/document.server";
 import { useLoaderData } from "@remix-run/react";
+import { GappedBox } from "~/ui-library";
 
 type LoaderData = {
   documents: Awaited<ReturnType<typeof getDocumentListItems>>;
@@ -22,9 +22,9 @@ const Documents = () => {
   const { documents } = data;
 
   return (
-    <MainColumn pageTitle="Documents">
+    <GappedBox>
       <DocumentsTable documents={documents} />
-    </MainColumn>
+    </GappedBox>
   );
 };
 

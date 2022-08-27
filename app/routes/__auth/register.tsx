@@ -50,8 +50,6 @@ export const action: ActionFunction = async ({ request, params }) => {
   const password = formData.get("password");
   const email = formData.get("email");
 
-  console.log(username, password, email, "action");
-
   if (!validateUsername(username)) {
     return json<ActionData>(
       { errors: { username: "Username is invalid" } },
@@ -165,6 +163,7 @@ const Register = () => {
               ref={passwordRef}
               id="password"
               name="password"
+              type="password"
               size={2}
               placeholder="Password"
               aria-invalid={fieldErrors?.password ? true : undefined}

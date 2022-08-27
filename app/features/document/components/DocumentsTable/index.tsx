@@ -2,7 +2,6 @@ import type { FC } from "react";
 import type { TDocument } from "~/models/document.server";
 import React, { useState } from "react";
 import { DocumentsTableRow } from "./DocumentsTableRow";
-import { DeleteModal, EmptyState } from "~/components";
 import {
   Table,
   TableBody,
@@ -11,7 +10,6 @@ import {
   TableRow,
 } from "~/ui-library/Table";
 import { Button, GappedBox, Link } from "~/ui-library";
-import { AddDocument } from "~/components/AddDocument";
 
 type Props = {
   documents: TDocument[];
@@ -26,13 +24,7 @@ export const DocumentsTable: FC<Props> = ({ documents }) => {
   });
 
   if (!allDocuments.length) {
-    return (
-      <EmptyState
-        message="You don't have any document yet."
-        link="/documents/new"
-        icon={<AddDocument />}
-      />
-    );
+    return <GappedBox>You don't have any document yet.</GappedBox>;
   }
 
   const refetch = async () => {
@@ -65,18 +57,6 @@ export const DocumentsTable: FC<Props> = ({ documents }) => {
           Add new document
         </Button>
       </GappedBox>
-      {modalState.isOpen && (
-        <DeleteModal
-          onConfirm={() => {
-            // deleteAndRefetch(modalState.documentId);
-            closeDeleteModal();
-          }}
-          setShow={setModalState}
-          show={modalState.isOpen}
-          title={deleteDocText.title}
-          message={deleteDocText.message}
-        />
-      )}
       <Table>
         <TableHeader>
           <TableRow>

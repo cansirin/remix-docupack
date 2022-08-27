@@ -1,7 +1,5 @@
 import type { FC } from "react";
 import React, { useState } from "react";
-import { Badge } from "~/components";
-import { Color } from "../../../../../utils/color";
 import type { TDocument } from "~/models/document.server";
 import { Link } from "@remix-run/react";
 import { TableBall, TableCell } from "~/ui-library/Table";
@@ -38,9 +36,7 @@ export const DocumentsTableRow: FC<Props> = ({ document }) => {
       </TableCell>
       <TableCell>
         <Box>
-          <Badge size="sm" bgColor={Color.Purple} textColor={Color.Gray}>
-            {document.type}
-          </Badge>
+          <GappedBox>{document.type}</GappedBox>
         </Box>
       </TableCell>
       <TableCell css={{ width: "%16", textAlign: "right" }}>

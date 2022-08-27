@@ -18,6 +18,15 @@ import {
   blueDarkA,
   greenDarkA,
   greenA,
+  crimson,
+  amberA,
+  crimsonA,
+  indigo,
+  indigoA,
+  violetA,
+  violet,
+  tomato,
+  tomatoA,
 } from "@radix-ui/colors";
 
 import type * as Stitches from "@stitches/react";
@@ -36,8 +45,17 @@ export const { styled, createTheme, getCssText, config, keyframes } =
         ...purple,
         ...blackA,
         ...grayA,
+        ...amberA,
         ...blueA,
         ...greenA,
+        ...crimson,
+        ...crimsonA,
+        ...indigo,
+        ...indigoA,
+        ...violet,
+        ...violetA,
+        ...tomato,
+        ...tomatoA,
 
         hiContrast: "$gray12",
         loContrast: "$gray1",
